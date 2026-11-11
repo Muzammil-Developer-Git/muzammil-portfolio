@@ -373,6 +373,27 @@ export const CERTIFICATES_CONFIG = {
   seed: [],
 };
 
+export const DOCUMENTS_CONFIG = {
+  collection: "documents",
+  singular: "Document",
+  addLabel: "+ Add Document",
+  fields: [
+    { key: "title", label: "Document Title", required: true, max: 140 },
+    { key: "description", label: "Short Description (optional)", type: "textarea", rows: 3, max: 300 },
+    {
+      key: "file",
+      label: "Document File",
+      type: "file",
+      required: true,
+      maxPdfKB: 500,
+      hint: "Image (JPG, PNG, WebP) or PDF up to 500 KB.",
+    },
+  ],
+  title: (i) => i.title,
+  subtitle: (i) => i.description || "",
+  seed: [],
+};
+
 export const CRUD_CONFIGS = {
   skills: SKILLS_CONFIG,
   education: EDUCATION_CONFIG,
@@ -381,4 +402,5 @@ export const CRUD_CONFIGS = {
   freelance: SERVICES_CONFIG,
   projects: PROJECTS_CONFIG,
   certificates: CERTIFICATES_CONFIG,
+  documents: DOCUMENTS_CONFIG,
 };

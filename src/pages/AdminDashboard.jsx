@@ -2,19 +2,19 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   LayoutDashboard, User, Camera, FileText, Code, GraduationCap, Briefcase,
-  FolderKanban, Award, Share2, Globe, FileDown, Mail, Settings,
+  FolderKanban, FolderOpen, Award, Share2, Globe, FileDown, Mail, Settings,
   LogOut, ExternalLink, Menu, Sun, Moon,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
 import ProfileFormManager from "../admin/ProfileFormManager";
 import PhotoManager from "../admin/PhotoManager";
-import { PROFILE_FIELDS, ABOUT_FIELDS } from "../admin/fieldConfigs";
-
 import CrudManager from "../admin/CrudManager";
-import { CRUD_CONFIGS } from "../admin/crudConfigs";
 import CvManager from "../admin/CvManager";
 import MessagesManager from "../admin/MessagesManager";
+import { CRUD_CONFIGS } from "../admin/crudConfigs";
+import { PROFILE_FIELDS, ABOUT_FIELDS, SETTINGS_FIELDS } from "../admin/fieldConfigs";
+import { DEFAULT_SETTINGS } from "../lib/defaults";
 
 const MODULES = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
@@ -26,6 +26,7 @@ const MODULES = [
   { id: "experience", label: "Work Experience", icon: Briefcase },
   { id: "projects", label: "Projects", icon: FolderKanban },
   { id: "certificates", label: "Certificates", icon: Award },
+  { id: "documents", label: "Other Documents", icon: FolderOpen },
   { id: "links", label: "Social Media Links", icon: Share2 },
   { id: "freelance", label: "Freelancing Profiles", icon: Globe },
   { id: "cv", label: "CV / Resume", icon: FileDown },
@@ -43,8 +44,9 @@ function renderModule(id, label, email) {
             Logged in as {email}
           </p>
           <p>
-            Profile Information, Profile Photo and About Me are ready to use.
-            The other modules will be added in the next parts.
+            Use the menu on the left to manage your profile, skills, projects,
+            certificates, CV and messages. Changes appear on your public
+            website as soon as you save them.
           </p>
         </div>
       );
@@ -54,17 +56,26 @@ function renderModule(id, label, email) {
       return <ProfileFormManager key="about" fields={ABOUT_FIELDS} />;
     case "photo":
       return <PhotoManager />;
-          case "cv":
+    case "cv":
       return <CvManager />;
     case "messages":
       return <MessagesManager />;
-        default:
+    case "settings":
+      return (
+        <ProfileFormManager
+          key="settings"
+          col="settings"
+          defaults={DEFAULT_SETTINGS}
+          fields={SETTINGS_FIELDS}
+        />
+      );
+    default:
       if (CRUD_CONFIGS[id]) {
         return <CrudManager key={id} config={CRUD_CONFIGS[id]} />;
       }
       return (
         <div className="card">
-          <p className="muted">The "{label}" manager will be added in a later part.</p>
+          <p className="muted">The "{label}" manager is not available.</p>
         </div>
       );
   }

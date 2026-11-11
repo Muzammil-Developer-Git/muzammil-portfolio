@@ -1,6 +1,6 @@
 import BrandIcon from "./BrandIcon";
 
-export default function Footer({ name, links }) {
+export default function Footer({ name, links, note }) {
   const shown = links.filter((l) => l.url);
   return (
     <footer className="footer">
@@ -22,6 +22,7 @@ export default function Footer({ name, links }) {
             ))}
           </div>
         )}
+        {note && <p style={{ marginBottom: 6 }}>{note}</p>}
         <p className="muted">
           © {new Date().getFullYear()} {name}. All rights reserved.
         </p>

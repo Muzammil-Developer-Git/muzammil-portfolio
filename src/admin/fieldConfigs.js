@@ -39,3 +39,27 @@ export const ABOUT_FIELDS = [
   },
   { key: "goals", label: "Career Goals", type: "textarea", rows: 3, max: 600 },
 ];
+
+export const SETTINGS_FIELDS = [
+  {
+    key: "siteTitle",
+    label: "Website Title",
+    required: true,
+    max: 80,
+    hint: "Shown in the browser tab and in search results.",
+  },
+  {
+    key: "metaDescription",
+    label: "Search Description",
+    type: "textarea",
+    rows: 3,
+    max: 200,
+    hint: "A short summary shown under your site title in search results.",
+  },
+  {
+    key: "footerNote",
+    label: "Footer Note (optional)",
+    max: 160,
+    hint: "A short line shown at the bottom of the website, above the copyright.",
+  },
+];

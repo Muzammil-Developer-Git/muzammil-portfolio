@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import usePortfolio from "../lib/usePortfolio";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -8,6 +9,7 @@ import Education from "../sections/Education";
 import Experience from "../sections/Experience";
 import Projects from "../sections/Projects";
 import Certificates from "../sections/Certificates";
+import Documents from "../sections/Documents";
 import Connect from "../sections/Connect";
 import Freelance from "../sections/Freelance";
 import Resume from "../sections/Resume";
@@ -15,6 +17,13 @@ import Contact from "../sections/Contact";
 
 export default function PublicSite() {
   const d = usePortfolio();
+  const { siteTitle, metaDescription } = d.settings;
+
+  useEffect(() => {
+    if (siteTitle) document.title = siteTitle;
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta && metaDescription) meta.setAttribute("content", metaDescription);
+  }, [siteTitle, metaDescription]);
 
   if (d.loading) {
     return <div className="center-screen muted">Loading...</div>;
@@ -31,6 +40,7 @@ export default function PublicSite() {
     d.experience.length > 0 && { id: "experience", label: "Experience" },
     d.projects.length > 0 && { id: "projects", label: "Projects" },
     { id: "certifications", label: "Certifications" },
+    d.documents.length > 0 && { id: "documents", label: "Documents" },
     d.links.some((l) => l.url) && { id: "connect", label: "Connect" },
     (d.services.length > 0 || hasUpwork) && { id: "freelance", label: "Freelance" },
     d.cvInfo && { id: "resume", label: "CV" },
@@ -54,12 +64,13 @@ export default function PublicSite() {
         <Experience items={d.experience} />
         <Projects projects={d.projects} />
         <Certificates items={d.certificates} />
+        <Documents items={d.documents} />
         <Connect links={d.links} />
         <Freelance services={d.services} skills={d.skills} links={d.links} />
         <Resume info={d.cvInfo} />
         <Contact profile={p} />
       </main>
-      <Footer name={p.fullName} links={d.links} />
+      <Footer name={p.fullName} links={d.links} note={d.settings.footerNote} />
     </>
   );
 }

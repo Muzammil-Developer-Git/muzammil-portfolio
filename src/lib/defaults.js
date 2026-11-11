@@ -13,3 +13,10 @@ export const DEFAULT_PROFILE = {
   interests: "",
   goals: "",
 };
+
+export const DEFAULT_SETTINGS = {
+  siteTitle: "Muzammil Hussain | Web Developer Portfolio",
+  metaDescription:
+    "Muzammil Hussain - Computer Science Graduate, Web Developer and Frontend Developer. Portfolio, projects, skills and CV.",
+  footerNote: "",
+};

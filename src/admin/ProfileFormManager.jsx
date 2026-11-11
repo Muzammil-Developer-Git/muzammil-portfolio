@@ -3,17 +3,21 @@ import { Save } from "lucide-react";
 import { getItem, saveItem } from "../lib/api";
 import { DEFAULT_PROFILE } from "../lib/defaults";
 
-export default function ProfileFormManager({ fields }) {
-  const [form, setForm] = useState(DEFAULT_PROFILE);
+export default function ProfileFormManager({
+  fields,
+  col = "profile",
+  defaults = DEFAULT_PROFILE,
+}) {
+  const [form, setForm] = useState(defaults);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState(null);
 
   useEffect(() => {
     let alive = true;
-    getItem("profile", "main")
+    getItem(col, "main")
       .then((d) => {
-        if (alive && d) setForm({ ...DEFAULT_PROFILE, ...d });
+        if (alive && d) setForm({ ...defaults, ...d });
       })
       .catch((e) => {
         if (alive) setMsg({ type: "error", text: "Could not load data: " + e.message });
@@ -24,6 +28,7 @@ export default function ProfileFormManager({ fields }) {
     return () => {
       alive = false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const change = (key, value) => setForm((f) => ({ ...f, [key]: value }));
@@ -50,7 +55,7 @@ export default function ProfileFormManager({ fields }) {
       fields.forEach((f) => {
         data[f.key] = String(form[f.key] ?? "").trim();
       });
-      await saveItem("profile", "main", data);
+      await saveItem(col, "main", data);
       setMsg({ type: "success", text: "Changes saved successfully." });
     } catch (err) {
       setMsg({ type: "error", text: "Could not save: " + err.message });
